@@ -6,5 +6,5 @@ module.exports = {
     defaults: {
         port: 3000
       },
-    secret: "Mohammed Yaseen"
+      JWT_SECRET : "Mohammed Yaseen"
 }
