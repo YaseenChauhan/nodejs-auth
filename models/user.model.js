@@ -17,7 +17,8 @@ const userSchema = mongoose.Schema({
     },
     accessToken: {
         type: String
-    }
+    },
+    __v: { type: Number, select: false}
 })
 
 const User = mongoose.model("user", userSchema);

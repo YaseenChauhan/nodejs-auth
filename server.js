@@ -2,12 +2,17 @@ const express = require('express');
 const compression = require('compression');
 const helmet = require('helmet');
 const cors = require('cors');
-const bodyParser = require('body-parser');
 const debug = require('debug')('node-passport:express-app');
 const config = require('./config/environments');
 const authRoutes = require('./routes/auth');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
+const mongoose = require('mongoose');
+
 
 const app = express();
+
+const passport = require('passport');
 
 // Logger for HTTP Requests
 const env = process.env.NODE_ENV || 'local';
@@ -30,6 +35,23 @@ app.use(helmet());
 app.disable('x-powered-by');
 
 app.use(express.json());
+const sessionStore = new MongoStore({ mongooseConnection: mongoose.connection, collection: 'sessions' })
+app.use(session({
+  //secret: process.env.SECRET,
+  secret: 'some secret',
+  resave: false,
+  saveUninitialized: true,
+  store: sessionStore,
+  cookie: {
+      maxAge: 1000 * 30
+  }
+}));
+
+require('./passport');
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 app.use('/api/v1/users', authRoutes);
 

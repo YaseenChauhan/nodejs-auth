@@ -59,6 +59,7 @@ series([
     debug('MongoDB initial tests completed successfully!');
 
     //   global.appRequire('passport');
+        // require('./passport');
       debug('All passport strategies loaded successfully!');
 
     server();
